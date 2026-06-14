@@ -1,8 +1,3 @@
-# ProtoController v1.0 by Brackeys
-# CC0 License
-# Intended for rapid prototyping of first-person games.
-# Happy prototyping!
-
 extends CharacterBody3D
 
 ## Can we move around?
@@ -52,8 +47,10 @@ var conduzindo_bola : bool = false
 @export var forca_do_passe : float = 50.0
 @export var time_laranja : String = "laranja" 
 @export var input_passe : String = "passe"
-@onready var zonadeposse: Area3D = $new_octa_laranja/zonadeposse
-@onready var bola_ref: RigidBody3D = get_node("../bola") # Certifique-se de que o nome coincide com o nó na cena Main
+@export_group("Referências Internas")
+@export var zonadeposse: Area3D
+@export var animation_player: AnimationPlayer
+@onready var bola_ref: RigidBody3D = get_tree().get_first_node_in_group("bola")
 
 var mouse_captured : bool = false
 var look_rotation : Vector2
@@ -63,40 +60,32 @@ var esta_ativo : bool = false
 var cooldown_posse : float = 0.0
 var posicao_inicial : Vector3
 
-@export var forca_do_chute_ao_gol : float = 60.0 # Força bem maior que a do passe
+@export var forca_do_chute_ao_gol : float = 60.0 
 @export var input_chute : String = "chute"
-@export var caminho_gol_adversario : NodePath = "../travea" # Caminho para a trave do outro time
+@export var caminho_gol_adversario : NodePath = "../travea"
 
 @export_group("Emotes")
 @export var input_emote_1 : String = "emote_1"
 @export var input_emote_2 : String = "emote_2"
-# Coloque o nome EXATO das animações de emote que estão no seu Blender/Godot
 @export var anim_emote_1 : String = "Armature|emote_1" 
 @export var anim_emote_2 : String = "Armature|emote_2"
+
+@export_group("Animações Base")
+@export var anim_idle : String = "Armature|idle"
+@export var anim_correndo : String = "Armature|novocorrendo"
+@export var anim_pique : String = "Armature|novopique"
+@export var anim_chute : String = "Armature|chute"
 
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
-@onready var camera: Camera3D = get_node("../camera_iso")
-@onready var animation_player: AnimationPlayer = $new_octa_laranja/AnimationPlayer
+@onready var camera: Camera3D = get_node("../../camera_iso")
 
 func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
 	posicao_inicial = global_position
-#função do mouse movimentar comentada
-
-#func _unhandled_input(event: InputEvent) -> void:
-	# Mouse capturing
-#	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-#		capture_mouse()
-#	if Input.is_key_pressed(KEY_ESCAPE):
-#		release_mouse()
-	
-	# Look around
-#	if mouse_captured and event is InputEventMouseMotion:
-#		rotate_look(event.relative)
 	
 	# Toggle freefly mode
 	if can_freefly and Input.is_action_just_pressed(input_freefly):
@@ -137,7 +126,6 @@ func _physics_process(delta: float) -> void:
 	if can_move:
 		var input_dir := Vector2.ZERO
 
-		# SÓ LÊ O TECLADO SE ESTE JOGADOR FOR O ATIVO
 		if esta_ativo:
 			input_dir = Input.get_vector(input_left, input_right, input_forward, input_back)
 			
@@ -146,48 +134,44 @@ func _physics_process(delta: float) -> void:
 		var right := Vector3(cam_basis.x.x, 0, cam_basis.x.z).normalized()
 		var move_dir := (forward * input_dir.y + right * input_dir.x).normalized()
 		
-		# --- SISTEMA DE CAPTURAR/GRUDAR A BOLA ---
 		if esta_ativo and not conduzindo_bola and cooldown_posse <= 0.0:
 			var corpos_na_zona = zonadeposse.get_overlapping_bodies()
 			for corpo in corpos_na_zona:
 				if corpo.is_in_group("bola"):
 					conduzindo_bola = true
 					corpo.freeze = true 
+					desarmar_outros_jogadores()
 					break
 
-		# --- MANTER A BOLA COLADA NO MARCADOR ---
 		if conduzindo_bola and is_instance_valid(bola_ref):
 			bola_ref.global_position = $PosicaoDaBola.global_position
 			bola_ref.linear_velocity = Vector3.ZERO
 			bola_ref.angular_velocity = Vector3.ZERO
 			
-			# EFEITO VISUAL: Fazer a bola girar no pé do jogador
 			if move_dir != Vector3.ZERO:
 				var eixo_de_giro = Vector3.UP.cross(move_dir).normalized()
 				var velocidade_do_giro = move_speed * delta * 2.0 
 				bola_ref.rotate(eixo_de_giro, velocidade_do_giro)
 
-		# --- SE PERDER O CONTROLE DO JOGADOR, SOLTA A BOLA ---
 		if not esta_ativo and conduzindo_bola:
 			conduzindo_bola = false
 			if is_instance_valid(bola_ref):
 				bola_ref.freeze = false
 
-		# --- LER OS BOTÕES DE EMOTE ---
-		if esta_ativo and not move_dir: # Só permite fazer emote se estiver parado
+		if esta_ativo and not move_dir:
 			if Input.is_action_just_pressed(input_emote_1):
 				animation_player.play(anim_emote_1)
 			elif Input.is_action_just_pressed(input_emote_2):
 				animation_player.play(anim_emote_2)
 					
-		# --- MOVIMENTO E ANIMAÇÃO ---
+
 		if move_dir:
 			if can_sprint and Input.is_action_pressed(input_sprint):
-				if animation_player.current_animation != "Armature|novocorrendo":
-					animation_player.play("Armature|novocorrendo")
+				if animation_player.current_animation != anim_correndo:
+					animation_player.play(anim_correndo)
 			else:
-				if animation_player.current_animation != "Armature|novopique":
-					animation_player.play("Armature|novopique")
+				if animation_player.current_animation != anim_pique:
+					animation_player.play(anim_pique)
 					
 			velocity.x = move_dir.x * move_speed
 			velocity.z = move_dir.z * move_speed
@@ -195,10 +179,9 @@ func _physics_process(delta: float) -> void:
 			var direcao_olhar = global_position + move_dir
 			look_at(direcao_olhar, Vector3.UP)
 		else:
-			# PROTEGER OS EMOTES DE SEREM CANCELADOS PELO IDLE
 			var anim_atual = animation_player.current_animation
-			if anim_atual != "Armature|chute" and anim_atual != anim_emote_1 and anim_atual != anim_emote_2 and anim_atual != "Armature|idle":
-				animation_player.play("Armature|idle")
+			if anim_atual != anim_chute and anim_atual != anim_emote_1 and anim_atual != anim_emote_2 and anim_atual != anim_idle:
+				animation_player.play(anim_idle)
 				
 			velocity.x = move_toward(velocity.x, 0, move_speed)
 			velocity.z = move_toward(velocity.z, 0, move_speed)
@@ -206,11 +189,10 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0
 		velocity.y = 0
 
-	# --- SISTEMA DE PASSE DESCONGELANDO A BOLA ---
 	if esta_ativo and Input.is_action_just_pressed(input_passe):
 		if conduzindo_bola:
 			conduzindo_bola = false
-			cooldown_posse = 0.4 # 0.4 segundos de proteção
+			cooldown_posse = 0.4
 			if is_instance_valid(bola_ref):
 				bola_ref.freeze = false 
 				
@@ -225,14 +207,13 @@ func _physics_process(delta: float) -> void:
 				else:
 					print("Nenhum companheiro de time encontrado em campo!")
 
-	# --- SISTEMA DE CHUTE AO GOL ---
 	if esta_ativo and Input.is_action_just_pressed(input_chute):
 		if conduzindo_bola:
 			conduzindo_bola = false
-			cooldown_posse = 0.5 # Evita que o jogador recapture a bola no frame seguinte
+			cooldown_posse = 0.5 
 			
 			if is_instance_valid(bola_ref):
-				bola_ref.freeze = false # Devolve a física para a bola poder voar
+				bola_ref.freeze = false
 				
 				var gol = get_node(caminho_gol_adversario)
 				if gol:
@@ -245,9 +226,6 @@ func _physics_process(delta: float) -> void:
 					bola_ref.angular_velocity = Vector3.ZERO
 					bola_ref.apply_central_impulse(direcao_do_chute * forca_do_chute_ao_gol)
 					
-	# Use velocity to actually move
-	move_and_slide()
-
 	for i in get_slide_collision_count():
 		var colisao = get_slide_collision(i)
 		var objeto = colisao.get_collider()
@@ -265,7 +243,6 @@ func _physics_process(delta: float) -> void:
 		if objeto is RigidBody3D:
 			var direcao = -colisao.get_normal()
 			objeto.apply_central_impulse(direcao * forca_do_chute)
-
 
 ## Rotate us to look around.
 ## Base of controller rotates around y (left/right). Head rotates around x (up/down).
@@ -328,9 +305,8 @@ func check_input_mappings():
 func encontrar_parceiro_mais_proximo() -> Node3D:
 	var parceiros = get_tree().get_nodes_in_group(time_laranja)
 	var melhor_parceiro : Node3D = null
-	var menor_distancia : float = 99999.0 # Valor alto inicial para a comparação
+	var menor_distancia : float = 99999.0
 	for parceiro in parceiros:
-		# Ignora a si mesmo na busca
 		if parceiro == self:
 			continue
 			
@@ -341,9 +317,15 @@ func encontrar_parceiro_mais_proximo() -> Node3D:
 			
 	return melhor_parceiro
 	
-# --- NOVA FUNÇÃO: VOLTAR PARA O LUGAR ---
 func resetar_posicao():
 	global_position = posicao_inicial
 	velocity = Vector3.ZERO
 	conduzindo_bola = false
 	
+func desarmar_outros_jogadores():
+	var todos_jogadores = get_tree().get_nodes_in_group("laranja") + get_tree().get_nodes_in_group("roxo")
+	
+	for jogador in todos_jogadores:
+		if jogador != self and jogador.conduzindo_bola:
+			jogador.conduzindo_bola = false
+			jogador.cooldown_posse = 0.6
