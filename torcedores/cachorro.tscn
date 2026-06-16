@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dr6j1r5h7astt"]
+
+[ext_resource type="Texture2D" uid="uid://vi3x8a2kihv7" path="res://torcedores/b7adf7e0cef288a618b26a3c7e359ae5-removebg-preview.png" id="1_iwv5h"]
+
+[node name="cachorro" type="Sprite3D" unique_id=488484397]
+transform = Transform3D(1.56, 0, 0, 0, 1.56, 0, 0, 0, 1.56, 0, 0, 0)
+texture = ExtResource("1_iwv5h")

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bxj2iqrdcbrid"]
+
+[ext_resource type="Texture2D" uid="uid://61hnk83k5ovb" path="res://torcedores/casal.png" id="1_sl26o"]
+
+[node name="casal" type="Sprite3D" unique_id=948980748]
+transform = Transform3D(2.045, 0, 0, 0, 2.045, 0, 0, 0, 2.045, 0, 0, 0)
+texture = ExtResource("1_sl26o")

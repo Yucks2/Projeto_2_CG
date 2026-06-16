@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://chc6b8xlb5h6o"]
+
+[ext_resource type="Texture2D" uid="uid://b2lia6jxu0uga" path="res://torcedores/Captura_de_tela_2026-06-15_084647-removebg-preview.png" id="1_d0fri"]
+
+[node name="darwin" type="Sprite3D" unique_id=1031429021]
+transform = Transform3D(2.585, 0, 0, 0, 2.585, 0, 0, 0, 2.585, 0, 0, 0)
+texture = ExtResource("1_d0fri")

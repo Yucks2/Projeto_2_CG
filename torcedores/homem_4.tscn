@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bgx1c2htgdndf"]
+
+[ext_resource type="Texture2D" uid="uid://dyynm7lnpljkv" path="res://torcedores/pngtree-stylish-man-gazing-upwards-with-clasped-hands-png-image_10902289-removebg-preview.png" id="1_ayekl"]
+
+[node name="homem4" type="Sprite3D" unique_id=1026394290]
+transform = Transform3D(1.935, 0, 0, 0, 1.935, 0, 0, 0, 1.935, 0, 0, 0)
+texture = ExtResource("1_ayekl")

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://4g5m7yclx1b1"]
+
+[ext_resource type="Texture2D" uid="uid://cebu47sqr5hdu" path="res://torcedores/man-cheering-carefree-excited-victory-transparent-background_1062244-29762-removebg-preview.png" id="1_714gj"]
+
+[node name="homem" type="Sprite3D" unique_id=1724890789]
+transform = Transform3D(2.07, 0, 0, 0, 2.07, 0, 0, 0, 2.07, 0, 0, 0)
+texture = ExtResource("1_714gj")

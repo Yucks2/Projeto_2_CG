@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b057xtx168y3r"]
+
+[ext_resource type="Texture2D" uid="uid://bmyw4fdrq5wj5" path="res://torcedores/469f22bb469eb2c505b7b99b0553be09-removebg-preview.png" id="1_sc820"]
+
+[node name="leandro" type="Sprite3D" unique_id=370494106]
+transform = Transform3D(2.435, 0, 0, 0, 2.435, 0, 0, 0, 2.435, 0, 0, 0)
+texture = ExtResource("1_sc820")

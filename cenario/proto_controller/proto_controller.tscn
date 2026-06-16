@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bs72ogkvdd7d6"]
+
+[ext_resource type="Script" uid="uid://dphqcsf7to46e" path="res://cenario/proto_controller/proto_controller.gd" id="1_ucva2"]
+[ext_resource type="PackedScene" path="res://addons/personagens/novo_octa_laranja.tscn" id="2_wr06p"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iof21"]
+radius = 0.4
+height = 1.8
+
+[node name="ProtoController" type="CharacterBody3D" unique_id=1636771121]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("1_ucva2")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1524200515]
+transform = Transform3D(0.526, 0, 0, 0, 0.541, 0, 0, 0, 0.6, 0, 0.47572726, 0.03909743)
+shape = SubResource("CapsuleShape3D_iof21")
+
+[node name="Head" type="Node3D" parent="." unique_id=2144773365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="novo_octa_laranja" parent="." unique_id=1420083579 instance=ExtResource("2_wr06p")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -0.0018623008, 0, 0.15209624)

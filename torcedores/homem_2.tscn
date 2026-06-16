@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bfkcn7vnq4nr6"]
+
+[ext_resource type="Texture2D" uid="uid://y7xqdgprh6ue" path="res://torcedores/13573657-removebg-preview.png" id="1_tae04"]
+
+[node name="homem2" type="Sprite3D" unique_id=1991394123]
+transform = Transform3D(2.375, 0, 0, 0, 2.375, 0, 0, 0, 2.375, 0, 0, 0)
+texture = ExtResource("1_tae04")

@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://c8i7chm7v1840"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dg77c"]
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.83137256, 0.6862745, 0.21568628, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=616281156]
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1691279504]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -338.5
+offset_right = 338.5
+offset_bottom = 154.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1764825748]
+layout_mode = 2
+
+[node name="Label_AMISTOSO" type="Label" parent="MarginContainer/VBoxContainer" unique_id=166177928]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=988500273]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dg77c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1227725243]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TeamOrange" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1392511646]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+size_flags_stretch_ratio = 1.08
+
+[node name="LARANJA" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/TeamOrange" unique_id=1633007064]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.48235294, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "🟠 LARANJA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1384626668]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "0 - 0"
+
+[node name="TeamPurple" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=811011090]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="ROXO" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/TeamPurple" unique_id=849889324]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.627451, 0.1254902, 0.9411765, 1)
+theme_override_font_sizes/font_size = 30
+text = "ROXO 🟣"
+horizontal_alignment = 1
+vertical_alignment = 1
